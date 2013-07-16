@@ -25,7 +25,7 @@ module.exports = function (obj, opts) {
             return '[' + out.join(',') + ']';
         }
         else {
-            var keys = objectKeys(node).sort(cmp(node));
+            var keys = objectKeys(node).sort(cmp && cmp(node));
             var out = [];
             for (var i = 0; i < keys.length; i++) {
                 var key = keys[i];
