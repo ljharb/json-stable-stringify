@@ -3,7 +3,15 @@ var json = typeof JSON !== 'undefined' ? JSON : require('jsonify');
 module.exports = function (obj, opts) {
     if (!opts) opts = {};
     if (typeof opts === 'function') opts = { cmp: opts };
-    var cmp = opts.cmp;
+    var cmp = opts.cmp && (function (f) {
+        return function (node) {
+            return function (a, b) {
+                var aobj = { key: a, value: node[a] };
+                var bobj = { key: b, value: node[b] };
+                return f(aobj, bobj);
+            };
+        };
+    })(opts.cmp);
     
     return (function stringify (node) {
         if (typeof node !== 'object') {
@@ -17,7 +25,7 @@ module.exports = function (obj, opts) {
             return '[' + out.join(',') + ']';
         }
         else {
-            var keys = objectKeys(node).sort(cmp);
+            var keys = objectKeys(node).sort(cmp(node));
             var out = [];
             for (var i = 0; i < keys.length; i++) {
                 var key = keys[i];
