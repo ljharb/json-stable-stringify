@@ -1,0 +1,42 @@
+var json = typeof JSON !== 'undefined' ? JSON : require('jsonify');
+
+module.exports = function (obj, opts) {
+    if (!opts) opts = {};
+    if (typeof opts === 'function') opts = { cmp: opts };
+    var cmp = opts.cmp;
+    
+    return (function stringify (node) {
+        if (typeof node !== 'object') {
+            return json.stringify(node);
+        }
+        if (isArray(node)) {
+            var out = [];
+            for (var i = 0; i < node.length; i++) {
+                out.push(stringify(node[i]));
+            }
+            return '[' + out.join(',') + ']';
+        }
+        else {
+            var keys = objectKeys(node).sort(cmp);
+            var out = [];
+            for (var i = 0; i < keys.length; i++) {
+                var key = keys[i];
+                out.push(stringify(key) + ':' + stringify(node[key]));
+            }
+            return '{' + out.join(',') + '}';
+        }
+    })(obj);
+};
+
+var isArray = Array.isArray || function (x) {
+    return {}.toString.call(x) === '[object Array]';
+};
+
+var objectKeys = Object.keys || function (obj) {
+    var has = Object.prototype.hasOwnProperty;
+    var keys = [];
+    for (var key in obj) {
+        if (has.call(obj)) keys.push(key);
+    }
+    return keys;
+};
