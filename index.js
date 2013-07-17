@@ -41,10 +41,10 @@ var isArray = Array.isArray || function (x) {
 };
 
 var objectKeys = Object.keys || function (obj) {
-    var has = Object.prototype.hasOwnProperty;
+    var has = Object.prototype.hasOwnProperty || function () { return true };
     var keys = [];
     for (var key in obj) {
-        if (has.call(obj)) keys.push(key);
+        if (has.call(obj, key)) keys.push(key);
     }
     return keys;
 };
