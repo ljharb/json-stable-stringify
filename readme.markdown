@@ -5,6 +5,10 @@ from stringified results
 
 You can also pass in a custom comparison function.
 
+[![browser support](https://ci.testling.com/substack/json-stable-stringify.png)](https://ci.testling.com/substack/json-stable-stringify)
+
+[![build status](https://secure.travis-ci.org/substack/json-stable-stringify.png)](http://travis-ci.org/substack/json-stable-stringify)
+
 # example
 
 ``` js

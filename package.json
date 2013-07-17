@@ -12,6 +12,16 @@
   "scripts": {
     "test": "tape test/*.js"
   },
+  "testling": {
+    "files": "test/*.js",
+    "browsers": [
+      "ie/8..latest",
+      "ff/5", "ff/latest",
+      "chrome/15", "chrome/latest",
+      "safari/latest",
+      "opera/latest"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/substack/json-stable-stringify.git"
