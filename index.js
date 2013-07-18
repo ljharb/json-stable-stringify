@@ -14,7 +14,7 @@ module.exports = function (obj, opts) {
     })(opts.cmp);
     
     return (function stringify (node) {
-        if (typeof node !== 'object') {
+        if (typeof node !== 'object' || node === null) {
             return json.stringify(node);
         }
         if (isArray(node)) {
