@@ -3,6 +3,8 @@ var json = typeof JSON !== 'undefined' ? JSON : require('jsonify');
 module.exports = function (obj, opts) {
     if (!opts) opts = {};
     if (typeof opts === 'function') opts = { cmp: opts };
+    var space = opts.space || '';
+    if (typeof space === 'number') space = Array(space+1).join(' ');
     var cmp = opts.cmp && (function (f) {
         return function (node) {
             return function (a, b) {
@@ -13,27 +15,31 @@ module.exports = function (obj, opts) {
         };
     })(opts.cmp);
     
-    return (function stringify (node) {
+    return (function stringify (node, level) {
+        var indent = space ? ('\n' + new Array(level + 1).join(space)) : '';
+        var colonSeparator = space ? ': ' : ':';
         if (typeof node !== 'object' || node === null) {
             return json.stringify(node);
         }
         if (isArray(node)) {
             var out = [];
             for (var i = 0; i < node.length; i++) {
-                out.push(stringify(node[i]));
+                var item = stringify(node[i], level+1);
+                out.push(indent + space + item);
             }
-            return '[' + out.join(',') + ']';
+            return '[' + out.join(',') + indent + ']';
         }
         else {
             var keys = objectKeys(node).sort(cmp && cmp(node));
             var out = [];
             for (var i = 0; i < keys.length; i++) {
                 var key = keys[i];
-                out.push(stringify(key) + ':' + stringify(node[key]));
+                var keyValue = stringify(key,0) + colonSeparator + stringify(node[key],level+1);
+                out.push(indent + space + keyValue);
             }
-            return '{' + out.join(',') + '}';
+            return '{' + out.join(',') + indent + '}';
         }
-    })(obj);
+    })(obj, 0);
 };
 
 var isArray = Array.isArray || function (x) {
