@@ -5,6 +5,8 @@ module.exports = function (obj, opts) {
     if (typeof opts === 'function') opts = { cmp: opts };
     var space = opts.space || '';
     if (typeof space === 'number') space = Array(space+1).join(' ');
+    var cycles = (typeof opts.cycles === 'boolean') ? opts.cycles : false;
+    
     var cmp = opts.cmp && (function (f) {
         return function (node) {
             return function (a, b) {
@@ -15,9 +17,11 @@ module.exports = function (obj, opts) {
         };
     })(opts.cmp);
     
+    var seen = [];
     return (function stringify (node, level) {
         var indent = space ? ('\n' + new Array(level + 1).join(space)) : '';
         var colonSeparator = space ? ': ' : ':';
+        
         if (typeof node !== 'object' || node === null) {
             return json.stringify(node);
         }
@@ -30,6 +34,12 @@ module.exports = function (obj, opts) {
             return '[' + out.join(',') + indent + ']';
         }
         else {
+            if (seen.indexOf(node) !== -1) {
+                if (cycles) return stringify('__cycle__');
+                else throw new TypeError('Converting circular structure to JSON');
+            } else {
+                seen.push(node);
+            }
             var keys = objectKeys(node).sort(cmp && cmp(node));
             var out = [];
             for (var i = 0; i < keys.length; i++) {
