@@ -83,7 +83,9 @@ which outputs:
 
 ### space
 
-If you specify `opts.space`, it will indent the output for pretty-printing. Valid values are strings (e.g. `{space: \t}`) or a number of spaces (`{space: 3}`).
+If you specify `opts.space`, it will indent the output for pretty-printing.
+Valid values are strings (e.g. `{space: \t}`) or a number of spaces
+(`{space: 3}`).
 
 For example:
 
