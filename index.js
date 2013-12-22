@@ -36,15 +36,18 @@ module.exports = function (obj, opts) {
         else {
             if (seen.indexOf(node) !== -1) {
                 if (cycles) return stringify('__cycle__');
-                else throw new TypeError('Converting circular structure to JSON');
-            } else {
-                seen.push(node);
+                throw new TypeError('Converting circular structure to JSON');
             }
+            else seen.push(node);
+            
             var keys = objectKeys(node).sort(cmp && cmp(node));
             var out = [];
             for (var i = 0; i < keys.length; i++) {
                 var key = keys[i];
-                var keyValue = stringify(key,0) + colonSeparator + stringify(node[key],level+1);
+                var keyValue = stringify(key,0)
+                    + colonSeparator
+                    + stringify(node[key],level+1)
+                ;
                 out.push(indent + space + keyValue);
             }
             return '{' + out.join(',') + indent + '}';
