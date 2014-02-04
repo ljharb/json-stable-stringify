@@ -39,7 +39,10 @@ module.exports = function (obj, opts) {
                 throw new TypeError('Converting circular structure to JSON');
             }
             else seen.push(node);
-            
+
+            if (node.toJSON && typeof node.toJSON === 'function') {
+              node = node.toJSON();
+            }            
             var keys = objectKeys(node).sort(cmp && cmp(node));
             var out = [];
             for (var i = 0; i < keys.length; i++) {
