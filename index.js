@@ -40,9 +40,9 @@ module.exports = function (obj, opts) {
             }
             else seen.push(node);
             
-            if (node.toJSON && typeof node.toJSON === 'function') {
-              node = node.toJSON();
-            }            
+            if (node && node.toJSON && typeof node.toJSON === 'function') {
+                node = node.toJSON();
+            }
             var keys = objectKeys(node).sort(cmp && cmp(node));
             var out = [];
             for (var i = 0; i < keys.length; i++) {
