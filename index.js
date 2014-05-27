@@ -6,7 +6,7 @@ module.exports = function (obj, opts) {
     var space = opts.space || '';
     if (typeof space === 'number') space = Array(space+1).join(' ');
     var cycles = (typeof opts.cycles === 'boolean') ? opts.cycles : false;
-    
+
     var cmp = opts.cmp && (function (f) {
         return function (node) {
             return function (a, b) {
@@ -16,12 +16,15 @@ module.exports = function (obj, opts) {
             };
         };
     })(opts.cmp);
-    
+
     var seen = [];
     return (function stringify (node, level) {
         var indent = space ? ('\n' + new Array(level + 1).join(space)) : '';
         var colonSeparator = space ? ': ' : ':';
-        
+
+        if (node && node.toJSON && typeof node.toJSON === 'function') {
+            node = node.toJSON();
+        }
         if (typeof node !== 'object' || node === null) {
             return json.stringify(node);
         }
@@ -39,10 +42,7 @@ module.exports = function (obj, opts) {
                 throw new TypeError('Converting circular structure to JSON');
             }
             else seen.push(node);
-            
-            if (node && node.toJSON && typeof node.toJSON === 'function') {
-                node = node.toJSON();
-            }
+
             var keys = objectKeys(node).sort(cmp && cmp(node));
             var out = [];
             for (var i = 0; i < keys.length; i++) {
