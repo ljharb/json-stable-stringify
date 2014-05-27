@@ -111,6 +111,12 @@ which outputs:
 }
 ```
 
+### replacer
+
+The replacer parameter is a function `opts.replacer(key, value)` that behaves
+the same as the replacer
+[from the core JSON object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_native_JSON#The_replacer_parameter).
+
 # install
 
 With [npm](https://npmjs.org) do:
