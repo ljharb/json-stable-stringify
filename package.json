@@ -1,6 +1,6 @@
 {
   "name": "json-stable-stringify",
-  "version": "0.1.3",
+  "version": "1.0.0",
   "description": "deterministic JSON.stringify() with custom sorting to get deterministic hashes from stringified results",
   "main": "index.js",
   "dependencies": {
