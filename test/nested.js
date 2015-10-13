@@ -26,3 +26,10 @@ test('cyclic (specifically allowed)', function (t) {
     one.two = two;
     t.equal(stringify(one, {cycles:true}), '{"a":1,"two":{"a":2,"one":"__cycle__"}}');
 });
+
+test('acyclic but with reused obj-property pointers', function (t) {
+    t.plan(1);
+    var x = { a: 1 }
+    var y = { b: x, c: x }
+    t.equal(stringify(y), '{"b":{"a":1},"c":{"a":1}}');
+});
