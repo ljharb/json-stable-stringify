@@ -33,3 +33,10 @@ test('repeated non-cyclic value', function(t) {
     var two = { a: one, b: one };
     t.equal(stringify(two), '{"a":{"x":1},"b":{"x":1}}');
 });
+
+test('acyclic but with reused obj-property pointers', function (t) {
+    t.plan(1);
+    var x = { a: 1 }
+    var y = { b: x, c: x }
+    t.equal(stringify(y), '{"b":{"a":1},"c":{"a":1}}');
+});
