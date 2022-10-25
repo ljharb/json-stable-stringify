@@ -7,17 +7,20 @@
     "jsonify": "~0.0.0"
   },
   "devDependencies": {
-    "tape": "~1.0.4"
+    "tape": "^5.6.1"
   },
   "scripts": {
-    "test": "tape test/*.js"
+    "tests-only": "tape 'test/**/*.js'",
+    "test": "npm run tests-only"
   },
   "testling": {
     "files": "test/*.js",
     "browsers": [
       "ie/8..latest",
-      "ff/5", "ff/latest",
-      "chrome/15", "chrome/latest",
+      "ff/5",
+      "ff/latest",
+      "chrome/15",
+      "chrome/latest",
       "safari/latest",
       "opera/latest"
     ]
