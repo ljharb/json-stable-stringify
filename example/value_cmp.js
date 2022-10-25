@@ -1,3 +1,5 @@
+'use strict';
+
 var stringify = require('../');
 
 var obj = { d: 6, c: 5, b: [{ z: 3, y: 2, x: 1 }, 9], a: 10 };

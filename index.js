@@ -1,11 +1,26 @@
+'use strict';
+
 var json = typeof JSON !== 'undefined' ? JSON : require('jsonify');
 
+var isArray = Array.isArray || function (x) {
+	return {}.toString.call(x) === '[object Array]';
+};
+
+var objectKeys = Object.keys || function (obj) {
+	var has = Object.prototype.hasOwnProperty || function () { return true; };
+	var keys = [];
+	for (var key in obj) {
+		if (has.call(obj, key)) { keys.push(key); }
+	}
+	return keys;
+};
+
 module.exports = function (obj, opts) {
-	if (!opts) opts = {};
-	if (typeof opts === 'function') opts = { cmp: opts };
+	if (!opts) { opts = {}; }
+	if (typeof opts === 'function') { opts = { cmp: opts }; }
 	var space = opts.space || '';
-	if (typeof space === 'number') space = Array(space + 1).join(' ');
-	var cycles = (typeof opts.cycles === 'boolean') ? opts.cycles : false;
+	if (typeof space === 'number') { space = Array(space + 1).join(' '); }
+	var cycles = typeof opts.cycles === 'boolean' ? opts.cycles : false;
 	var replacer = opts.replacer || function (key, value) { return value; };
 
 	var cmp = opts.cmp && (function (f) {
@@ -16,11 +31,11 @@ module.exports = function (obj, opts) {
 				return f(aobj, bobj);
 			};
 		};
-	})(opts.cmp);
+	}(opts.cmp));
 
 	var seen = [];
 	return (function stringify(parent, key, node, level) {
-		var indent = space ? ('\n' + new Array(level + 1).join(space)) : '';
+		var indent = space ? '\n' + new Array(level + 1).join(space) : '';
 		var colonSeparator = space ? ': ' : ':';
 
 		if (node && node.toJSON && typeof node.toJSON === 'function') {
@@ -43,42 +58,28 @@ module.exports = function (obj, opts) {
 			}
 			return '[' + out.join(',') + indent + ']';
 		}
-		else {
-			if (seen.indexOf(node) !== -1) {
-				if (cycles) return json.stringify('__cycle__');
-				throw new TypeError('Converting circular structure to JSON');
-			}
-			else seen.push(node);
 
-			var keys = objectKeys(node).sort(cmp && cmp(node));
-			var out = [];
-			for (var i = 0; i < keys.length; i++) {
-				var key = keys[i];
-				var value = stringify(node, key, node[key], level + 1);
+		if (seen.indexOf(node) !== -1) {
+			if (cycles) { return json.stringify('__cycle__'); }
+			throw new TypeError('Converting circular structure to JSON');
+		} else { seen.push(node); }
 
-				if (!value) continue;
+		var keys = objectKeys(node).sort(cmp && cmp(node));
+		var out = [];
+		for (var i = 0; i < keys.length; i++) {
+			var key = keys[i];
+			var value = stringify(node, key, node[key], level + 1);
 
-				var keyValue = json.stringify(key)
+			if (!value) { continue; }
+
+			var keyValue = json.stringify(key)
 					+ colonSeparator
 					+ value;
-				;
-				out.push(indent + space + keyValue);
-			}
-			seen.splice(seen.indexOf(node), 1);
-			return '{' + out.join(',') + indent + '}';
+
+			out.push(indent + space + keyValue);
 		}
-	})({ '': obj }, '', obj, 0);
-};
+		seen.splice(seen.indexOf(node), 1);
+		return '{' + out.join(',') + indent + '}';
 
-var isArray = Array.isArray || function (x) {
-	return {}.toString.call(x) === '[object Array]';
-};
-
-var objectKeys = Object.keys || function (obj) {
-	var has = Object.prototype.hasOwnProperty || function () { return true };
-	var keys = [];
-	for (var key in obj) {
-		if (has.call(obj, key)) keys.push(key);
-	}
-	return keys;
+	}({ '': obj }, '', obj, 0));
 };
