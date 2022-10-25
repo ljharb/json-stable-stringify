@@ -5,7 +5,7 @@ test('replace root', function (t) {
 	t.plan(1);
 
 	var obj = { a: 1, b: 2, c: false };
-	var replacer = function(key, value) { return 'one'; };
+	var replacer = function (key, value) { return 'one'; };
 
 	t.equal(stringify(obj, { replacer: replacer }), '"one"');
 });
@@ -14,9 +14,9 @@ test('replace numbers', function (t) {
 	t.plan(1);
 
 	var obj = { a: 1, b: 2, c: false };
-	var replacer = function(key, value) {
-		if(value === 1) return 'one';
-		if(value === 2) return 'two';
+	var replacer = function (key, value) {
+		if (value === 1) return 'one';
+		if (value === 2) return 'two';
 		return value;
 	};
 
@@ -27,9 +27,9 @@ test('replace with object', function (t) {
 	t.plan(1);
 
 	var obj = { a: 1, b: 2, c: false };
-	var replacer = function(key, value) {
-		if(key === 'b') return { d: 1 };
-		if(value === 1) return 'one';
+	var replacer = function (key, value) {
+		if (key === 'b') return { d: 1 };
+		if (value === 1) return 'one';
 		return value;
 	};
 
@@ -40,8 +40,8 @@ test('replace with undefined', function (t) {
 	t.plan(1);
 
 	var obj = { a: 1, b: 2, c: false };
-	var replacer = function(key, value) {
-		if(value === false) return;
+	var replacer = function (key, value) {
+		if (value === false) return;
 		return value;
 	};
 
@@ -52,8 +52,8 @@ test('replace with array', function (t) {
 	t.plan(1);
 
 	var obj = { a: 1, b: 2, c: false };
-	var replacer = function(key, value) {
-		if(key === 'b') return ['one', 'two'];
+	var replacer = function (key, value) {
+		if (key === 'b') return ['one', 'two'];
 		return value;
 	};
 
@@ -63,10 +63,10 @@ test('replace with array', function (t) {
 test('replace array item', function (t) {
 	t.plan(1);
 
-	var obj = { a: 1, b: 2, c: [1,2] };
-	var replacer = function(key, value) {
-		if(value === 1) return 'one';
-		if(value === 2) return 'two';
+	var obj = { a: 1, b: 2, c: [1, 2] };
+	var replacer = function (key, value) {
+		if (value === 1) return 'one';
+		if (value === 2) return 'two';
 		return value;
 	};
 

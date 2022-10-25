@@ -52,7 +52,7 @@ var stringify = require('json-stable-stringify');
 
 var obj = { c: 8, b: [{z:6,y:5,x:4},7], a: 3 };
 var s = stringify(obj, function (a, b) {
-    return a.key < b.key ? 1 : -1;
+	return a.key < b.key ? 1 : -1;
 });
 console.log(s);
 ```
@@ -70,7 +70,7 @@ var stringify = require('json-stable-stringify');
 
 var obj = { d: 6, c: 5, b: [{z:3,y:2,x:1},9], a: 10 };
 var s = stringify(obj, function (a, b) {
-    return a.value < b.value ? 1 : -1;
+	return a.value < b.value ? 1 : -1;
 });
 console.log(s);
 ```
