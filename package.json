@@ -7,9 +7,13 @@
     "jsonify": "~0.0.0"
   },
   "devDependencies": {
+    "@ljharb/eslint-config": "^21.0.0",
+    "eslint": "=8.8.0",
     "tape": "^5.6.1"
   },
   "scripts": {
+    "lint": "eslint --ext=js,mjs .",
+    "pretest": "npm run lint",
     "tests-only": "tape 'test/**/*.js'",
     "test": "npm run tests-only"
   },
