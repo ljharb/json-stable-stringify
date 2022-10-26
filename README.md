@@ -1,7 +1,13 @@
-# json-stable-stringify
+# json-stable-stringify <sup>[![Version Badge][npm-version-svg]][package-url]</sup>
 
-deterministic version of `JSON.stringify()` so you can get a consistent hash
-from stringified results
+[![github actions][actions-image]][actions-url]
+[![coverage][codecov-image]][codecov-url]
+[![License][license-image]][license-url]
+[![Downloads][downloads-image]][downloads-url]
+
+[![npm badge][npm-badge-png]][package-url]
+
+deterministic version of `JSON.stringify()` so you can get a consistent hash from stringified results
 
 You can also pass in a custom comparison function.
 
@@ -13,7 +19,9 @@ You can also pass in a custom comparison function.
 
 ``` js
 var stringify = require('json-stable-stringify');
-var obj = { c: 8, b: [{z:6,y:5,x:4},7], a: 3 };
+
+var obj = { c: 8, b: [{ z: 6, y: 5, x: 4 }, 7], a: 3 };
+
 console.log(stringify(obj));
 ```
 
@@ -37,9 +45,8 @@ Return a deterministic stringified string `str` from the object `obj`.
 
 ### cmp
 
-If `opts` is given, you can supply an `opts.cmp` to have a custom comparison
-function for object keys. Your function `opts.cmp` is called with these
-parameters:
+If `opts` is given, you can supply an `opts.cmp` to have a custom comparison function for object keys.
+Your function `opts.cmp` is called with these parameters:
 
 ``` js
 opts.cmp({ key: akey, value: avalue }, { key: bkey, value: bvalue })
@@ -50,10 +57,12 @@ For example, to sort on the object key names in reverse order you could write:
 ``` js
 var stringify = require('json-stable-stringify');
 
-var obj = { c: 8, b: [{z:6,y:5,x:4},7], a: 3 };
+var obj = { c: 8, b: [{ z: 6, y: 5, x: 4 },7], a: 3 };
+
 var s = stringify(obj, function (a, b) {
-	return a.key < b.key ? 1 : -1;
+	return b.key.localeCompare(a.key);
 });
+
 console.log(s);
 ```
 
@@ -68,10 +77,12 @@ Or if you wanted to sort on the object values in reverse order, you could write:
 ```
 var stringify = require('json-stable-stringify');
 
-var obj = { d: 6, c: 5, b: [{z:3,y:2,x:1},9], a: 10 };
+var obj = { d: 6, c: 5, b: [{ z: 3, y: 2, x: 1 }, 9], a: 10 };
+
 var s = stringify(obj, function (a, b) {
 	return a.value < b.value ? 1 : -1;
 });
+
 console.log(s);
 ```
 
@@ -91,7 +102,9 @@ For example:
 
 ```js
 var obj = { b: 1, a: { foo: 'bar', and: [1, 2, 3] } };
+
 var s = stringify(obj, { space: '  ' });
+
 console.log(s);
 ```
 
@@ -113,8 +126,7 @@ which outputs:
 
 ### replacer
 
-The replacer parameter is a function `opts.replacer(key, value)` that behaves
-the same as the replacer
+The replacer parameter is a function `opts.replacer(key, value)` that behaves the same as the replacer
 [from the core JSON object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_native_JSON#The_replacer_parameter).
 
 # install
@@ -128,3 +140,19 @@ npm install json-stable-stringify
 # license
 
 MIT
+
+[package-url]: https://npmjs.org/package/json-stable-stringify
+[npm-version-svg]: https://versionbadg.es/ljharb/json-stable-stringify.svg
+[deps-svg]: https://david-dm.org/ljharb/json-stable-stringify.svg
+[deps-url]: https://david-dm.org/ljharb/json-stable-stringify
+[dev-deps-svg]: https://david-dm.org/ljharb/json-stable-stringify/dev-status.svg
+[dev-deps-url]: https://david-dm.org/ljharb/json-stable-stringify#info=devDependencies
+[npm-badge-png]: https://nodei.co/npm/json-stable-stringify.png?downloads=true&stars=true
+[license-image]: https://img.shields.io/npm/l/json-stable-stringify.svg
+[license-url]: LICENSE
+[downloads-image]: https://img.shields.io/npm/dm/json-stable-stringify.svg
+[downloads-url]: https://npm-stat.com/charts.html?package=json-stable-stringify
+[codecov-image]: https://codecov.io/gh/ljharb/json-stable-stringify/branch/main/graphs/badge.svg
+[codecov-url]: https://app.codecov.io/gh/ljharb/json-stable-stringify/
+[actions-image]: https://img.shields.io/endpoint?url=https://github-actions-badge-u3jn4tfpocch.runkit.sh/ljharb/json-stable-stringify
+[actions-url]: https://github.com/ljharb/json-stable-stringify/actions
