@@ -1,6 +1,6 @@
 'use strict';
 
-var json = typeof JSON !== 'undefined' ? JSON : require('jsonify');
+var jsonStringify = (typeof JSON !== 'undefined' ? JSON : require('jsonify')).stringify;
 
 var isArray = Array.isArray || function (x) {
 	return {}.toString.call(x) === '[object Array]';
@@ -48,19 +48,19 @@ module.exports = function (obj, opts) {
 			return;
 		}
 		if (typeof node !== 'object' || node === null) {
-			return json.stringify(node);
+			return jsonStringify(node);
 		}
 		if (isArray(node)) {
 			var out = [];
 			for (var i = 0; i < node.length; i++) {
-				var item = stringify(node, i, node[i], level + 1) || json.stringify(null);
+				var item = stringify(node, i, node[i], level + 1) || jsonStringify(null);
 				out.push(indent + space + item);
 			}
 			return '[' + out.join(',') + indent + ']';
 		}
 
 		if (seen.indexOf(node) !== -1) {
-			if (cycles) { return json.stringify('__cycle__'); }
+			if (cycles) { return jsonStringify('__cycle__'); }
 			throw new TypeError('Converting circular structure to JSON');
 		} else { seen.push(node); }
 
@@ -72,7 +72,7 @@ module.exports = function (obj, opts) {
 
 			if (!value) { continue; }
 
-			var keyValue = json.stringify(key)
+			var keyValue = jsonStringify(key)
 					+ colonSeparator
 					+ value;
 
