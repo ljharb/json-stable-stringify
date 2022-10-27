@@ -4,7 +4,7 @@
 	"description": "deterministic JSON.stringify() with custom sorting to get deterministic hashes from stringified results",
 	"main": "index.js",
 	"dependencies": {
-		"jsonify": "~0.0.0"
+		"jsonify": "^0.0.1"
 	},
 	"devDependencies": {
 		"@ljharb/eslint-config": "^21.0.0",
