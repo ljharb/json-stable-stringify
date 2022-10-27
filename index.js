@@ -23,15 +23,15 @@ module.exports = function (obj, opts) {
 	var cycles = typeof opts.cycles === 'boolean' ? opts.cycles : false;
 	var replacer = opts.replacer || function (key, value) { return value; };
 
-	var cmp = opts.cmp && (function (f) {
-		return function (node) {
-			return function (a, b) {
-				var aobj = { key: a, value: node[a] };
-				var bobj = { key: b, value: node[b] };
-				return f(aobj, bobj);
-			};
+	var cmpOpt = opts.cmp;
+	var cmp = cmpOpt && function (node) {
+		return function (a, b) {
+			return cmpOpt(
+				{ key: a, value: node[a] },
+				{ key: b, value: node[b] }
+			);
 		};
-	}(opts.cmp));
+	};
 
 	var seen = [];
 	return (function stringify(parent, key, node, level) {
