@@ -2,18 +2,8 @@
 
 var jsonStringify = (typeof JSON !== 'undefined' ? JSON : require('jsonify')).stringify;
 
-var isArray = Array.isArray || function (x) {
-	return {}.toString.call(x) === '[object Array]';
-};
-
-var objectKeys = Object.keys || function (obj) {
-	var has = Object.prototype.hasOwnProperty || function () { return true; };
-	var keys = [];
-	for (var key in obj) {
-		if (has.call(obj, key)) { keys.push(key); }
-	}
-	return keys;
-};
+var isArray = require('isarray');
+var objectKeys = require('object-keys');
 
 module.exports = function (obj, opts) {
 	if (!opts) { opts = {}; }
