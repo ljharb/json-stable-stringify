@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.0.2](https://github.com/ljharb/json-stable-stringify/compare/v1.0.1...v1.0.2) - 2022-11-07
+
+### Commits
+
+- [eslint] fix indentation and whitespace [`c97e78c`](https://github.com/ljharb/json-stable-stringify/commit/c97e78cf3c0695701095dc0036681182585a6392)
+- [eslint] more cleanup [`c162117`](https://github.com/ljharb/json-stable-stringify/commit/c162117489c6dc63ece402b4a9b6e566f109fa65)
+- [meta] add `auto-changelog` [`83934ff`](https://github.com/ljharb/json-stable-stringify/commit/83934ffbbb3e72b9da09bf6436e1f86e7dce3b74)
+- [actions] add reusable workflows [`7b24830`](https://github.com/ljharb/json-stable-stringify/commit/7b248309f6ba87e2e52f99485c1f8b209b5788dc)
+- [readme] rename, add badges [`5433588`](https://github.com/ljharb/json-stable-stringify/commit/5433588781ebd98e41c81b5bfed1fb67520cf171)
+- [eslint] add eslint [`7be6c27`](https://github.com/ljharb/json-stable-stringify/commit/7be6c2755a7e2ead43017761b248a21511e457a0)
+- [meta] create FUNDING.yml; add `funding` in package.json [`6edbece`](https://github.com/ljharb/json-stable-stringify/commit/6edbece874fb656b9957b7bb362cf492f95fe259)
+- [meta] use `npmignore` to autogenerate an npmignore file [`b5d7d3a`](https://github.com/ljharb/json-stable-stringify/commit/b5d7d3abbe3d3a653e9ed511ab1b48940c5eb126)
+- [Dev Deps] update `tape` [`2200cf1`](https://github.com/ljharb/json-stable-stringify/commit/2200cf1e5822a4dd928541c3122a0922703c951f)
+- [actions] update rebase action [`e41ac00`](https://github.com/ljharb/json-stable-stringify/commit/e41ac000fb633d3df7c1e417ffd6213d885b64a1)
+- [meta] update URLs [`f17e490`](https://github.com/ljharb/json-stable-stringify/commit/f17e49038cf39a84a8a2677cc6445fad54902766)
+- Only apps should have lockfiles [`4f052f4`](https://github.com/ljharb/json-stable-stringify/commit/4f052f4ebf722024bc3827064b2d823f405ff2f6)
+- add breaking test (acyclic detected as cyclic) [`7f5f443`](https://github.com/ljharb/json-stable-stringify/commit/7f5f443e90402a520f1413833318b02bbb11ad67)
+- [meta] add `safe-publish-latest` [`ddb843f`](https://github.com/ljharb/json-stable-stringify/commit/ddb843f678bfe5145afaf03d811701c5ce4a17a6)
+- [Tests] add `aud` in `posttest` [`245c9bf`](https://github.com/ljharb/json-stable-stringify/commit/245c9bfa291d6d33813d44941d7639494fa8579a)
+- [Deps] update `jsonify` [`7b79a68`](https://github.com/ljharb/json-stable-stringify/commit/7b79a686f1ccda88b3ab20549840764c9b6f74eb)
+- fix conflict [`e43ca2a`](https://github.com/ljharb/json-stable-stringify/commit/e43ca2a1dcfc39bf1514684492767ef6040d1f3e)
+
 ## [v1.0.1](https://github.com/ljharb/json-stable-stringify/compare/v1.0.0...v1.0.1) - 2016-02-02
 
 ### Commits
