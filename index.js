@@ -24,15 +24,15 @@ module.exports = function (obj, opts) {
 	};
 
 	var seen = [];
-	return (function stringify(parent, key, node, level) {
-		var indent = space ? '\n' + new Array(level + 1).join(space) : '';
+	return (function stringify(parent, key, node, path = []) {
+		var indent = space ? '\n' + new Array(path.length + 1).join(space) : '';
 		var colonSeparator = space ? ': ' : ':';
 
 		if (node && node.toJSON && typeof node.toJSON === 'function') {
 			node = node.toJSON();
 		}
 
-		node = replacer.call(parent, key, node);
+		node = replacer.call(parent, key, node, path);
 
 		if (node === undefined) {
 			return;
@@ -43,7 +43,7 @@ module.exports = function (obj, opts) {
 		if (isArray(node)) {
 			var out = [];
 			for (var i = 0; i < node.length; i++) {
-				var item = stringify(node, i, node[i], level + 1) || jsonStringify(null);
+				var item = stringify(node, i, node[i], [].concat(path, [i])) || jsonStringify(null);
 				out.push(indent + space + item);
 			}
 			return '[' + out.join(',') + indent + ']';
@@ -54,11 +54,11 @@ module.exports = function (obj, opts) {
 			throw new TypeError('Converting circular structure to JSON');
 		} else { seen.push(node); }
 
-		var keys = objectKeys(node).sort(cmp && cmp(node));
+		var keys = objectKeys(node).sort(cmp && (a, b) => cmp(node)(a, b, path));
 		var out = [];
 		for (var i = 0; i < keys.length; i++) {
 			var key = keys[i];
-			var value = stringify(node, key, node[key], level + 1);
+			var value = stringify(node, key, node[key], [].concat(path, [key]));
 
 			if (!value) { continue; }
 
