@@ -54,7 +54,7 @@ module.exports = function (obj, opts) {
 			throw new TypeError('Converting circular structure to JSON');
 		} else { seen.push(node); }
 
-		var keys = objectKeys(node).sort(cmp && (a, b) => cmp(node)(a, b, path));
+		var keys = objectKeys(node).sort(cmp && function (a, b) { return cmp(node)(a, b, path); });
 		var out = [];
 		for (var i = 0; i < keys.length; i++) {
 			var key = keys[i];
