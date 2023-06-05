@@ -58,7 +58,7 @@ module.exports = function (obj, opts) {
 		var out = [];
 		for (var i = 0; i < keys.length; i++) {
 			var key = keys[i];
-			var value = stringify(node, key, node[key], [].concat(path, [key]));
+			var value = stringify(node, key, node[key], path.concat(key));
 
 			if (!value) { continue; }
 
