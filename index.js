@@ -25,6 +25,7 @@ module.exports = function (obj, opts) {
 
 	var seen = [];
 	return (function stringify(parent, key, node, path = []) {
+	  path = typeof(path) === 'number' ? new Array(path) : path;
 		var indent = space ? '\n' + new Array(path.length + 1).join(space) : '';
 		var colonSeparator = space ? ': ' : ':';
 
