@@ -43,7 +43,7 @@ module.exports = function (obj, opts) {
 		if (isArray(node)) {
 			var out = [];
 			for (var i = 0; i < node.length; i++) {
-				var item = stringify(node, i, node[i], [].concat(path, [i])) || jsonStringify(null);
+				var item = stringify(node, i, node[i], path.concat(i)) || jsonStringify(null);
 				out.push(indent + space + item);
 			}
 			return '[' + out.join(',') + indent + ']';
