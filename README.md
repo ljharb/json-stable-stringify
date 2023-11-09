@@ -49,7 +49,7 @@ If `opts` is given, you can supply an `opts.cmp` to have a custom comparison fun
 Your function `opts.cmp` is called with these parameters:
 
 ``` js
-opts.cmp({ key: akey, value: avalue }, { key: bkey, value: bvalue })
+opts.cmp({ key: akey, value: avalue }, { key: bkey, value: bvalue }, { get(key): value })
 ```
 
 For example, to sort on the object key names in reverse order you could write:
@@ -68,13 +68,13 @@ console.log(s);
 
 which results in the output string:
 
-```
+``` js
 {"c":8,"b":[{"z":6,"y":5,"x":4},7],"a":3}
 ```
 
 Or if you wanted to sort on the object values in reverse order, you could write:
 
-```
+``` js
 var stringify = require('json-stable-stringify');
 
 var obj = { d: 6, c: 5, b: [{ z: 3, y: 2, x: 1 }, 9], a: 10 };
@@ -88,9 +88,11 @@ console.log(s);
 
 which outputs:
 
-```
+``` js
 {"d":6,"c":5,"b":[{"z":3,"y":2,"x":1},9],"a":10}
 ```
+
+An additional param `get(key)` returns the value of the key from the object being currently compared.
 
 ### space
 

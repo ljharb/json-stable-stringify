@@ -15,10 +15,12 @@ module.exports = function (obj, opts) {
 
 	var cmpOpt = opts.cmp;
 	var cmp = cmpOpt && function (node) {
+		var get = cmpOpt.length > 2 && function get(k) { return node[k]; };
 		return function (a, b) {
 			return cmpOpt(
 				{ key: a, value: node[a] },
-				{ key: b, value: node[b] }
+				{ key: b, value: node[b] },
+				get ? { __proto__: null, get: get } : void undefined
 			);
 		};
 	};
