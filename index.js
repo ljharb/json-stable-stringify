@@ -4,6 +4,7 @@ var jsonStringify = (typeof JSON !== 'undefined' ? JSON : require('jsonify')).st
 
 var isArray = require('isarray');
 var objectKeys = require('object-keys');
+var callBind = require('call-bind');
 
 module.exports = function (obj, opts) {
 	if (!opts) { opts = {}; }
@@ -11,7 +12,7 @@ module.exports = function (obj, opts) {
 	var space = opts.space || '';
 	if (typeof space === 'number') { space = Array(space + 1).join(' '); }
 	var cycles = typeof opts.cycles === 'boolean' ? opts.cycles : false;
-	var replacer = opts.replacer || function (key, value) { return value; };
+	var replacer = opts.replacer ? callBind(opts.replacer) : function (parent, key, value) { return value; };
 
 	var cmpOpt = opts.cmp;
 	var cmp = cmpOpt && function (node) {
@@ -34,7 +35,7 @@ module.exports = function (obj, opts) {
 			node = node.toJSON();
 		}
 
-		node = replacer.call(parent, key, node);
+		node = replacer(parent, key, node);
 
 		if (node === undefined) {
 			return;
@@ -65,8 +66,8 @@ module.exports = function (obj, opts) {
 			if (!value) { continue; }
 
 			var keyValue = jsonStringify(key)
-					+ colonSeparator
-					+ value;
+				+ colonSeparator
+				+ value;
 
 			out.push(indent + space + keyValue);
 		}
