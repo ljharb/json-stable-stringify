@@ -16,15 +16,14 @@ var strRepeat = function repeat(n, char) {
 
 var defaultReplacer = function (parent, key, value) { return value; };
 
-module.exports = function (obj, opts) {
-	if (!opts) { opts = {}; }
-	if (typeof opts === 'function') { opts = { cmp: opts }; }
-	var space = opts.space || '';
+module.exports = function stableStringify(obj) {
+	var opts = arguments.length > 1 ? arguments[1] : void undefined;
+	var space = (opts && opts.space) || '';
 	if (typeof space === 'number') { space = strRepeat(space, ' '); }
-	var cycles = typeof opts.cycles === 'boolean' ? opts.cycles : false;
-	var replacer = opts.replacer ? callBind(opts.replacer) : defaultReplacer;
+	var cycles = !!opts && typeof opts.cycles === 'boolean' && opts.cycles;
+	var replacer = opts && opts.replacer ? callBind(opts.replacer) : defaultReplacer;
 
-	var cmpOpt = opts.cmp;
+	var cmpOpt = typeof opts === 'function' ? opts : opts && opts.cmp;
 	var cmp = cmpOpt && function (node) {
 		var get = cmpOpt.length > 2 && function get(k) { return node[k]; };
 		return function (a, b) {
