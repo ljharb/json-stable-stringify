@@ -14,13 +14,15 @@ var strRepeat = function repeat(n, char) {
 	return str;
 };
 
+var defaultReplacer = function (parent, key, value) { return value; };
+
 module.exports = function (obj, opts) {
 	if (!opts) { opts = {}; }
 	if (typeof opts === 'function') { opts = { cmp: opts }; }
 	var space = opts.space || '';
 	if (typeof space === 'number') { space = strRepeat(space, ' '); }
 	var cycles = typeof opts.cycles === 'boolean' ? opts.cycles : false;
-	var replacer = opts.replacer ? callBind(opts.replacer) : function (parent, key, value) { return value; };
+	var replacer = opts.replacer ? callBind(opts.replacer) : defaultReplacer;
 
 	var cmpOpt = opts.cmp;
 	var cmp = cmpOpt && function (node) {
