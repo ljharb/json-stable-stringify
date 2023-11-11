@@ -6,11 +6,19 @@ var isArray = require('isarray');
 var objectKeys = require('object-keys');
 var callBind = require('call-bind');
 
+var strRepeat = function repeat(n, char) {
+	var str = '';
+	for (var i = 0; i < n; i += 1) {
+		str += char;
+	}
+	return str;
+};
+
 module.exports = function (obj, opts) {
 	if (!opts) { opts = {}; }
 	if (typeof opts === 'function') { opts = { cmp: opts }; }
 	var space = opts.space || '';
-	if (typeof space === 'number') { space = Array(space + 1).join(' '); }
+	if (typeof space === 'number') { space = strRepeat(space, ' '); }
 	var cycles = typeof opts.cycles === 'boolean' ? opts.cycles : false;
 	var replacer = opts.replacer ? callBind(opts.replacer) : function (parent, key, value) { return value; };
 
@@ -28,7 +36,7 @@ module.exports = function (obj, opts) {
 
 	var seen = [];
 	return (function stringify(parent, key, node, level) {
-		var indent = space ? '\n' + new Array(level + 1).join(space) : '';
+		var indent = space ? '\n' + strRepeat(level, space) : '';
 		var colonSeparator = space ? ': ' : ':';
 
 		if (node && node.toJSON && typeof node.toJSON === 'function') {
