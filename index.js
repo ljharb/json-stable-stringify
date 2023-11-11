@@ -54,12 +54,15 @@ module.exports = function (obj, opts) {
 			return jsonStringify(node);
 		}
 		if (isArray(node)) {
-			var out = [];
+			var out = '';
 			for (var i = 0; i < node.length; i++) {
 				var item = stringify(node, i, node[i], level + 1) || jsonStringify(null);
-				out.push(indent + space + item);
+				out += indent + space + item;
+				if ((i + 1) < node.length) {
+					out += ',';
+				}
 			}
-			return '[' + out.join(',') + indent + ']';
+			return '[' + out + indent + ']';
 		}
 
 		if (seen.indexOf(node) !== -1) {
@@ -68,7 +71,8 @@ module.exports = function (obj, opts) {
 		} else { seen.push(node); }
 
 		var keys = objectKeys(node).sort(cmp && cmp(node));
-		var out = [];
+		var out = '';
+		var needsComma = false;
 		for (var i = 0; i < keys.length; i++) {
 			var key = keys[i];
 			var value = stringify(node, key, node[key], level + 1);
@@ -79,10 +83,11 @@ module.exports = function (obj, opts) {
 				+ colonSeparator
 				+ value;
 
-			out.push(indent + space + keyValue);
+			out += (needsComma ? ',' : '') + indent + space + keyValue;
+			needsComma = true;
 		}
 		seen.splice(seen.indexOf(node), 1);
-		return '{' + out.join(',') + indent + '}';
+		return '{' + out + indent + '}';
 
 	}({ '': obj }, '', obj, 0));
 };
