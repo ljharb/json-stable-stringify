@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.1.0](https://github.com/ljharb/json-stable-stringify/compare/v1.0.2...v1.1.0) - 2023-11-13
+
+### Commits
+
+- [New] `opts.cmp`: add `get` function [`1b11748`](https://github.com/ljharb/json-stable-stringify/commit/1b117480abdfe8d2a29d3ce9fefc46d7181ba2fa)
+- [meta] update license text so GitHub can identify it [`fd520e1`](https://github.com/ljharb/json-stable-stringify/commit/fd520e17af7121e2d8e678fe7c296c2b617b0b74)
+- [Refactor] use `isarray`, `object-keys` instead of homegrown attempts [`d1d2038`](https://github.com/ljharb/json-stable-stringify/commit/d1d20388f579d6a92fce70fbd00a0af36bd8d097)
+- [Refactor] build up a string instead of an array + join [`6c066b8`](https://github.com/ljharb/json-stable-stringify/commit/6c066b82708eb7e7ca0ca7f89737df48aa534a6c)
+- [Refactor] avoid an IIFE [`8243ea1`](https://github.com/ljharb/json-stable-stringify/commit/8243ea1a4c780c126b8800334b398e1c5e2ed9f9)
+- [Perf] avoid creating an options object when not needed [`02f0778`](https://github.com/ljharb/json-stable-stringify/commit/02f0778989960dfd46781b231fa3d06e9519befa)
+- [Refactor] avoid `new Array` [`80d52a1`](https://github.com/ljharb/json-stable-stringify/commit/80d52a197d8e695a6b949c9839136b72606d7bf1)
+- [Robustness] use `call-bind` to invoke replacer [`c52438f`](https://github.com/ljharb/json-stable-stringify/commit/c52438fe222554b3f138cebbeac55844b5614451)
+- [Robustness] cache `JSON.stringify` at module load [`616dec3`](https://github.com/ljharb/json-stable-stringify/commit/616dec38c80db6f94cdf9c2bcc175f9e7d8bc570)
+- [Dev Deps] update `@ljharb/eslint-config`, `aud`, `tape` [`494a3ce`](https://github.com/ljharb/json-stable-stringify/commit/494a3ce7cc1fd2aa56981af68c037c802979378e)
+- [Dev Deps] update `@ljharb/eslint-config`, `aud`, `tape` [`861ea7d`](https://github.com/ljharb/json-stable-stringify/commit/861ea7d38700ee3a50721c4299f4e967394129d7)
+- [Refactor] avoid recreating default replacer [`4e95ebb`](https://github.com/ljharb/json-stable-stringify/commit/4e95ebb69e17b5e40af9be363c3216b1fcb91517)
+- [Tests] remove unused travis.yml [`1226971`](https://github.com/ljharb/json-stable-stringify/commit/12269716dd570af4cb21e87bf9156911e1c6b82b)
+- [meta] add missing `engines.node` [`7a80ff6`](https://github.com/ljharb/json-stable-stringify/commit/7a80ff6a9ba24801f58f1d1175b6527accdf9cd0)
+
 ## [v1.0.2](https://github.com/ljharb/json-stable-stringify/compare/v1.0.1...v1.0.2) - 2022-11-07
 
 ### Commits
