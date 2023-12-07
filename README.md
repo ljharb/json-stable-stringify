@@ -33,10 +33,6 @@ output:
 
 # methods
 
-``` js
-var stringify = require('json-stable-stringify')
-```
-
 ## var str = stringify(obj, opts)
 
 Return a deterministic stringified string `str` from the object `obj`.
@@ -137,6 +133,16 @@ With [npm](https://npmjs.org) do:
 
 ```
 npm install json-stable-stringify
+```
+
+CommonJS example:
+``` js
+var stringify = require('json-stable-stringify')
+```
+
+Es6 example:
+``` js
+import stringify from 'json-stable-stringify'
 ```
 
 # license
