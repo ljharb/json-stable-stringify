@@ -18,9 +18,9 @@ You can also pass in a custom comparison function.
 # example
 
 ``` js
-var stringify = require('json-stable-stringify');
+const stringify = require('json-stable-stringify');
 
-var obj = { c: 8, b: [{ z: 6, y: 5, x: 4 }, 7], a: 3 };
+const obj = { c: 8, b: [{ z: 6, y: 5, x: 4 }, 7], a: 3 };
 
 console.log(stringify(obj));
 ```
@@ -34,10 +34,11 @@ output:
 # methods
 
 ``` js
-var stringify = require('json-stable-stringify')
+const stringify = require('json-stable-stringify')
 ```
 
-## var str = stringify(obj, opts)
+<a id="var-str--stringifyobj-opts"></a>
+## const str = stringify(obj, opts)
 
 Return a deterministic stringified string `str` from the object `obj`.
 
@@ -55,11 +56,11 @@ opts.cmp({ key: akey, value: avalue }, { key: bkey, value: bvalue }, { get(key):
 For example, to sort on the object key names in reverse order you could write:
 
 ``` js
-var stringify = require('json-stable-stringify');
+const stringify = require('json-stable-stringify');
 
-var obj = { c: 8, b: [{ z: 6, y: 5, x: 4 },7], a: 3 };
+const obj = { c: 8, b: [{ z: 6, y: 5, x: 4 },7], a: 3 };
 
-var s = stringify(obj, function (a, b) {
+const s = stringify(obj, function (a, b) {
 	return b.key.localeCompare(a.key);
 });
 
@@ -75,11 +76,11 @@ which results in the output string:
 Or if you wanted to sort on the object values in reverse order, you could write:
 
 ``` js
-var stringify = require('json-stable-stringify');
+const stringify = require('json-stable-stringify');
 
-var obj = { d: 6, c: 5, b: [{ z: 3, y: 2, x: 1 }, 9], a: 10 };
+const obj = { d: 6, c: 5, b: [{ z: 3, y: 2, x: 1 }, 9], a: 10 };
 
-var s = stringify(obj, function (a, b) {
+const s = stringify(obj, function (a, b) {
 	return a.value < b.value ? 1 : -1;
 });
 
@@ -103,9 +104,9 @@ Valid values are strings (e.g. `{space: \t}`) or a number of spaces
 For example:
 
 ```js
-var obj = { b: 1, a: { foo: 'bar', and: [1, 2, 3] } };
+const obj = { b: 1, a: { foo: 'bar', and: [1, 2, 3] } };
 
-var s = stringify(obj, { space: '  ' });
+const s = stringify(obj, { space: '  ' });
 
 console.log(s);
 ```
