@@ -5,6 +5,10 @@ var jsonStringify = (typeof JSON !== 'undefined' ? JSON : require('jsonify')).st
 var isArray = require('isarray');
 var objectKeys = require('object-keys');
 var callBind = require('call-bind');
+var callBound = require('call-bind/callBound');
+
+var $join = callBound('Array.prototype.join');
+var $push = callBound('Array.prototype.push');
 
 var strRepeat = function repeat(n, char) {
 	var str = '';
@@ -53,25 +57,21 @@ module.exports = function stableStringify(obj) {
 			return jsonStringify(node);
 		}
 		if (isArray(node)) {
-			var out = '';
+			var out = [];
 			for (var i = 0; i < node.length; i++) {
 				var item = stringify(node, i, node[i], level + 1) || jsonStringify(null);
-				out += indent + space + item;
-				if ((i + 1) < node.length) {
-					out += ',';
-				}
+				$push(out, indent + space + item);
 			}
-			return '[' + out + indent + ']';
+			return '[' + $join(out, ',') + indent + ']';
 		}
 
 		if (seen.indexOf(node) !== -1) {
 			if (cycles) { return jsonStringify('__cycle__'); }
 			throw new TypeError('Converting circular structure to JSON');
-		} else { seen.push(node); }
+		} else { $push(seen, node); }
 
 		var keys = objectKeys(node).sort(cmp && cmp(node));
-		var out = '';
-		var needsComma = false;
+		var out = [];
 		for (var i = 0; i < keys.length; i++) {
 			var key = keys[i];
 			var value = stringify(node, key, node[key], level + 1);
@@ -82,11 +82,10 @@ module.exports = function stableStringify(obj) {
 				+ colonSeparator
 				+ value;
 
-			out += (needsComma ? ',' : '') + indent + space + keyValue;
-			needsComma = true;
+			$push(out, indent + space + keyValue);
 		}
 		seen.splice(seen.indexOf(node), 1);
-		return '{' + out + indent + '}';
+		return '{' + $join(out, ',') + indent + '}';
 
 	}({ '': obj }, '', obj, 0));
 };
