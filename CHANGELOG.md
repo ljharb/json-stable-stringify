@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.1.1](https://github.com/ljharb/json-stable-stringify/compare/v1.1.0...v1.1.1) - 2024-01-16
+
+### Fixed
+
+- [Performance] use an array join instead of a string. [`#9`](https://github.com/ljharb/json-stable-stringify/issues/9)
+
+### Commits
+
+- [readme] replaced var with const [`e22d419`](https://github.com/ljharb/json-stable-stringify/commit/e22d419b54d8fd1dc36aa18b685da0032c74ec0f)
+- [Dev Deps] update `aud`, `tape` [`dc26af2`](https://github.com/ljharb/json-stable-stringify/commit/dc26af2cac5caa4e9ecb72f384c3c652aa612457)
+
 ## [v1.1.0](https://github.com/ljharb/json-stable-stringify/compare/v1.0.2...v1.1.0) - 2023-11-13
 
 ### Commits
