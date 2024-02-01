@@ -6,8 +6,7 @@
 	"dependencies": {
 		"call-bind": "^1.0.5",
 		"isarray": "^2.0.5",
-		"jsonify": "^0.0.1",
-		"object-keys": "^1.1.1"
+		"jsonify": "^0.0.1"
 	},
 	"devDependencies": {
 		"@ljharb/eslint-config": "^21.1.0",
