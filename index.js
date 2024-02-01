@@ -2,7 +2,6 @@
 
 var jsonStringify = (typeof JSON !== 'undefined' ? JSON : require('jsonify')).stringify;
 
-var isArray = require('isarray');
 var callBind = require('call-bind');
 var callBound = require('call-bind/callBound');
 
@@ -55,7 +54,7 @@ module.exports = function stableStringify(obj) {
 		if (typeof node !== 'object' || node === null) {
 			return jsonStringify(node);
 		}
-		if (isArray(node)) {
+		if (Array.isArray(node)) {
 			var out = [];
 			for (var i = 0; i < node.length; i++) {
 				var item = stringify(node, i, node[i], level + 1) || jsonStringify(null);
