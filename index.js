@@ -2,8 +2,6 @@
 
 var jsonStringify = (typeof JSON !== 'undefined' ? JSON : require('jsonify')).stringify;
 
-var isArray = require('isarray');
-var objectKeys = require('object-keys');
 var callBind = require('call-bind');
 var callBound = require('call-bind/callBound');
 
@@ -56,7 +54,7 @@ module.exports = function stableStringify(obj) {
 		if (typeof node !== 'object' || node === null) {
 			return jsonStringify(node);
 		}
-		if (isArray(node)) {
+		if (Array.isArray(node)) {
 			var out = [];
 			for (var i = 0; i < node.length; i++) {
 				var item = stringify(node, i, node[i], level + 1) || jsonStringify(null);
@@ -70,7 +68,7 @@ module.exports = function stableStringify(obj) {
 			throw new TypeError('Converting circular structure to JSON');
 		} else { $push(seen, node); }
 
-		var keys = objectKeys(node).sort(cmp && cmp(node));
+		var keys = Object.keys(node).sort(cmp && cmp(node));
 		var out = [];
 		for (var i = 0; i < keys.length; i++) {
 			var key = keys[i];
