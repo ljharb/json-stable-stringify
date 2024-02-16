@@ -11,10 +11,6 @@ deterministic version of `JSON.stringify()` so you can get a consistent hash fro
 
 You can also pass in a custom comparison function.
 
-[![browser support](https://ci.testling.com/ljharb/json-stable-stringify.png)](https://ci.testling.com/ljharb/json-stable-stringify)
-
-[![build status](https://secure.travis-ci.org/ljharb/json-stable-stringify.png)](http://travis-ci.org/ljharb/json-stable-stringify)
-
 # example
 
 ``` js
