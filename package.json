@@ -4,7 +4,7 @@
 	"description": "deterministic JSON.stringify() with custom sorting to get deterministic hashes from stringified results",
 	"main": "index.js",
 	"dependencies": {
-		"call-bind": "^1.0.5",
+		"call-bind": "^1.0.7",
 		"isarray": "^2.0.5",
 		"jsonify": "^0.0.1",
 		"object-keys": "^1.1.1"
