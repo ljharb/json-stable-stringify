@@ -70,3 +70,29 @@ test('space parameter (same as native)', function (t) {
 		JSON.stringify(obj, null, '  ')
 	);
 });
+
+test('space parameter, on a cmp function', function (t) {
+	t.plan(3);
+	var obj = { one: 1, two: 2 };
+	var cmp = function (a, b) {
+		return a < b ? 1 : -1;
+	};
+
+	t.equal(
+		stringify(obj, { space: '\t' }),
+		'{\n\t"one": 1,\n\t"two": 2\n}',
+		'no cmp option (control)'
+	);
+	t.equal(
+		stringify(obj, { cmp: cmp, space: '\t' }),
+		'{\n\t"two": 2,\n\t"one": 1\n}',
+		'cmp option in the object'
+	);
+
+	cmp.space = '\t';
+	t.equal(
+		stringify(obj, cmp),
+		'{\n\t"two": 2,\n\t"one": 1\n}',
+		'cmp passed directly, with space option on it'
+	);
+});
