@@ -14,8 +14,8 @@
 		"no-redeclare": 1,
 		"no-restricted-syntax": 1,
 		"object-curly-newline": 0,
-    "max-statements": 1,
-    "operator-linebreak": 0,
+		"max-statements": 1,
+		"operator-linebreak": 0,
 		"sort-keys": 1,
 	},
 

@@ -42,54 +42,56 @@ module.exports = function stableStringify(obj) {
 	};
 
 	var seen = [];
-	return (function stringify(parent, key, node, level) {
-		var indent = space ? '\n' + strRepeat(level, space) : '';
-		var colonSeparator = space ? ': ' : ':';
+	return (
+		function stringify(parent, key, node, level) {
+			var indent = space ? '\n' + strRepeat(level, space) : '';
+			var colonSeparator = space ? ': ' : ':';
 
-		if (node && node.toJSON && typeof node.toJSON === 'function') {
-			node = node.toJSON();
-		}
-
-		node = replacer(parent, key, node);
-
-		if (node === undefined) {
-			return;
-		}
-		if (typeof node !== 'object' || node === null) {
-			return jsonStringify(node);
-		}
-		if (isArray(node)) {
-			var out = [];
-			for (var i = 0; i < node.length; i++) {
-				var item = stringify(node, i, node[i], level + 1) || jsonStringify(null);
-				out[out.length] = indent + space + item;
+			if (node && node.toJSON && typeof node.toJSON === 'function') {
+				node = node.toJSON();
 			}
-			return '[' + $join(out, ',') + indent + ']';
-		}
 
-		if ($indexOf(seen, node) !== -1) {
-			if (cycles) { return jsonStringify('__cycle__'); }
-			throw new TypeError('Converting circular structure to JSON');
-		} else {
-			seen[seen.length] = node;
-		}
+			node = replacer(parent, key, node);
 
-		var keys = $sort(objectKeys(node), cmp && cmp(node));
-		var out = [];
-		for (var i = 0; i < keys.length; i++) {
-			var key = keys[i];
-			var value = stringify(node, key, node[key], level + 1);
+			if (node === undefined) {
+				return;
+			}
+			if (typeof node !== 'object' || node === null) {
+				return jsonStringify(node);
+			}
+			if (isArray(node)) {
+				var out = [];
+				for (var i = 0; i < node.length; i++) {
+					var item = stringify(node, i, node[i], level + 1) || jsonStringify(null);
+					out[out.length] = indent + space + item;
+				}
+				return '[' + $join(out, ',') + indent + ']';
+			}
 
-			if (!value) { continue; }
+			if ($indexOf(seen, node) !== -1) {
+				if (cycles) { return jsonStringify('__cycle__'); }
+				throw new TypeError('Converting circular structure to JSON');
+			} else {
+				seen[seen.length] = node;
+			}
 
-			var keyValue = jsonStringify(key)
-				+ colonSeparator
-				+ value;
+			var keys = $sort(objectKeys(node), cmp && cmp(node));
+			var out = [];
+			for (var i = 0; i < keys.length; i++) {
+				var key = keys[i];
+				var value = stringify(node, key, node[key], level + 1);
 
-			out[out.length] = indent + space + keyValue;
-		}
-		$splice(seen, $indexOf(seen, node), 1);
-		return '{' + $join(out, ',') + indent + '}';
+				if (!value) { continue; }
 
-	}({ '': obj }, '', obj, 0));
+				var keyValue = jsonStringify(key)
+					+ colonSeparator
+					+ value;
+
+				out[out.length] = indent + space + keyValue;
+			}
+			$splice(seen, $indexOf(seen, node), 1);
+			return '{' + $join(out, ',') + indent + '}';
+
+		}({ '': obj }, '', obj, 0)
+	);
 };
