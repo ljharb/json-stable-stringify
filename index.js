@@ -8,7 +8,9 @@ var callBind = require('call-bind');
 var callBound = require('call-bound');
 
 var $join = callBound('Array.prototype.join');
-var $push = callBound('Array.prototype.push');
+var $indexOf = callBound('Array.prototype.indexOf');
+var $splice = callBound('Array.prototype.splice');
+var $sort = callBound('Array.prototype.sort');
 
 var strRepeat = function repeat(n, char) {
 	var str = '';
@@ -60,17 +62,19 @@ module.exports = function stableStringify(obj) {
 			var out = [];
 			for (var i = 0; i < node.length; i++) {
 				var item = stringify(node, i, node[i], level + 1) || jsonStringify(null);
-				$push(out, indent + space + item);
+				out[out.length] = indent + space + item;
 			}
 			return '[' + $join(out, ',') + indent + ']';
 		}
 
-		if (seen.indexOf(node) !== -1) {
+		if ($indexOf(seen, node) !== -1) {
 			if (cycles) { return jsonStringify('__cycle__'); }
 			throw new TypeError('Converting circular structure to JSON');
-		} else { $push(seen, node); }
+		} else {
+			seen[seen.length] = node;
+		}
 
-		var keys = objectKeys(node).sort(cmp && cmp(node));
+		var keys = $sort(objectKeys(node), cmp && cmp(node));
 		var out = [];
 		for (var i = 0; i < keys.length; i++) {
 			var key = keys[i];
@@ -82,9 +86,9 @@ module.exports = function stableStringify(obj) {
 				+ colonSeparator
 				+ value;
 
-			$push(out, indent + space + keyValue);
+			out[out.length] = indent + space + keyValue;
 		}
-		seen.splice(seen.indexOf(node), 1);
+		$splice(seen, $indexOf(seen, node), 1);
 		return '{' + $join(out, ',') + indent + '}';
 
 	}({ '': obj }, '', obj, 0));
