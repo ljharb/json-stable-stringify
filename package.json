@@ -42,6 +42,7 @@
 	},
 	"dependencies": {
 		"call-bind": "^1.0.8",
+		"call-bound": "^1.0.3",
 		"isarray": "^2.0.5",
 		"jsonify": "^0.0.1",
 		"object-keys": "^1.1.1"

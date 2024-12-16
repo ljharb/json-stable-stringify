@@ -5,7 +5,7 @@ var jsonStringify = (typeof JSON !== 'undefined' ? JSON : require('jsonify')).st
 var isArray = require('isarray');
 var objectKeys = require('object-keys');
 var callBind = require('call-bind');
-var callBound = require('call-bind/callBound');
+var callBound = require('call-bound');
 
 var $join = callBound('Array.prototype.join');
 var $push = callBound('Array.prototype.push');
