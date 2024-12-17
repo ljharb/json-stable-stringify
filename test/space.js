@@ -3,6 +3,9 @@
 var test = require('tape');
 var stringify = require('../');
 
+// @ts-expect-error node ensures this will never fail
+var isNode10OrLess = parseInt(process.version.match(/^v(\d+)\./)[1], 10) <= 10;
+
 test('space parameter', function (t) {
 	t.plan(1);
 	var obj = { one: 1, two: 2 };
@@ -76,7 +79,7 @@ test('space parameter, on a cmp function', function (t) {
 	var obj = { one: 1, two: 2 };
 	/** @type {import('..').Comparator & import('../').StableStringifyOptions} */
 	var cmp = function (a, b) {
-		return a < b ? 1 : -1;
+		return (a < b ? 1 : -1) * (isNode10OrLess ? -1 : 1);
 	};
 
 	t.equal(
