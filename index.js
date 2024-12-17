@@ -1,5 +1,6 @@
 'use strict';
 
+/** @type {typeof JSON.stringify} */
 var jsonStringify = (typeof JSON !== 'undefined' ? JSON : require('jsonify')).stringify;
 
 var isArray = require('isarray');
@@ -12,6 +13,7 @@ var $indexOf = callBound('Array.prototype.indexOf');
 var $splice = callBound('Array.prototype.splice');
 var $sort = callBound('Array.prototype.sort');
 
+/** @type {(n: number, char: string) => string} */
 var strRepeat = function repeat(n, char) {
 	var str = '';
 	for (var i = 0; i < n; i += 1) {
@@ -20,35 +22,47 @@ var strRepeat = function repeat(n, char) {
 	return str;
 };
 
-var defaultReplacer = function (parent, key, value) { return value; };
+/** @type {(parent: import('.').Node, key: import('.').Key, value: unknown) => unknown} */
+var defaultReplacer = function (_parent, _key, value) { return value; };
 
+/** @type {import('.')} */
 module.exports = function stableStringify(obj) {
+	/** @type {Parameters<import('.')>[1]} */
 	var opts = arguments.length > 1 ? arguments[1] : void undefined;
 	var space = (opts && opts.space) || '';
 	if (typeof space === 'number') { space = strRepeat(space, ' '); }
 	var cycles = !!opts && typeof opts.cycles === 'boolean' && opts.cycles;
+	/** @type {undefined | typeof defaultReplacer} */
 	var replacer = opts && opts.replacer ? callBind(opts.replacer) : defaultReplacer;
 
 	var cmpOpt = typeof opts === 'function' ? opts : opts && opts.cmp;
+	/** @type {undefined | (<T extends import('.').NonArrayNode>(node: T) => (a: Exclude<keyof T, symbol | number>, b: Exclude<keyof T, symbol | number>) => number)} */
 	var cmp = cmpOpt && function (node) {
-		var get = cmpOpt.length > 2 && function get(k) { return node[k]; };
+		// eslint-disable-next-line no-extra-parens
+		var get = /** @type {NonNullable<typeof cmpOpt>} */ (cmpOpt).length > 2
+			&& /** @type {import('.').Getter['get']} */ function get(k) { return node[k]; };
 		return function (a, b) {
-			return cmpOpt(
+			// eslint-disable-next-line no-extra-parens
+			return /** @type {NonNullable<typeof cmpOpt>} */ (cmpOpt)(
 				{ key: a, value: node[a] },
 				{ key: b, value: node[b] },
-				get ? { __proto__: null, get: get } : void undefined
+				// @ts-expect-error TS doesn't understand the optimization used here
+				get ? /** @type {import('.').Getter} */ { __proto__: null, get: get } : void undefined
 			);
 		};
 	};
 
+	/** @type {import('.').Node[]} */
 	var seen = [];
-	return (
+	return (/** @type {(parent: import('.').Node, key: string | number, node: unknown, level: number) => string | undefined} */
 		function stringify(parent, key, node, level) {
 			var indent = space ? '\n' + strRepeat(level, space) : '';
 			var colonSeparator = space ? ': ' : ':';
 
-			if (node && node.toJSON && typeof node.toJSON === 'function') {
-				node = node.toJSON();
+			// eslint-disable-next-line no-extra-parens
+			if (node && /** @type {{ toJSON?: unknown }} */ (node).toJSON && typeof /** @type {{ toJSON?: unknown }} */ (node).toJSON === 'function') {
+				// eslint-disable-next-line no-extra-parens
+				node = /** @type {{ toJSON: Function }} */ (node).toJSON();
 			}
 
 			node = replacer(parent, key, node);
@@ -72,14 +86,17 @@ module.exports = function stableStringify(obj) {
 				if (cycles) { return jsonStringify('__cycle__'); }
 				throw new TypeError('Converting circular structure to JSON');
 			} else {
-				seen[seen.length] = node;
+				seen[seen.length] = /** @type {import('.').NonArrayNode} */ (node);
 			}
 
-			var keys = $sort(objectKeys(node), cmp && cmp(node));
+			/** @type {import('.').Key[]} */
+			// eslint-disable-next-line no-extra-parens
+			var keys = $sort(objectKeys(node), cmp && cmp(/** @type {import('.').NonArrayNode} */ (node)));
 			var out = [];
 			for (var i = 0; i < keys.length; i++) {
 				var key = keys[i];
-				var value = stringify(node, key, node[key], level + 1);
+				// eslint-disable-next-line no-extra-parens
+				var value = stringify(/** @type {import('.').Node} */ (node), key, /** @type {import('.').NonArrayNode} */ (node)[key], level + 1);
 
 				if (!value) { continue; }
 
@@ -91,7 +108,6 @@ module.exports = function stableStringify(obj) {
 			}
 			$splice(seen, $indexOf(seen, node), 1);
 			return '{' + $join(out, ',') + indent + '}';
-
 		}({ '': obj }, '', obj, 0)
 	);
 };

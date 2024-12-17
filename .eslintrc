@@ -5,6 +5,7 @@
 
 	"rules": {
 		"consistent-return": 1,
+		"max-len": 0,
 		"max-lines-per-function": 0,
 		"max-params": 1,
 		"max-statements-per-line": [2, { "max": 2 }],

@@ -74,6 +74,7 @@ test('space parameter (same as native)', function (t) {
 test('space parameter, on a cmp function', function (t) {
 	t.plan(3);
 	var obj = { one: 1, two: 2 };
+	/** @type {import('..').Comparator & import('../').StableStringifyOptions} */
 	var cmp = function (a, b) {
 		return a < b ? 1 : -1;
 	};

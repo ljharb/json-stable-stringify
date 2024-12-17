@@ -16,7 +16,8 @@ test('replace numbers', function (t) {
 	t.plan(1);
 
 	var obj = { a: 1, b: 2, c: false };
-	var replacer = function (key, value) {
+	/** @type {import('..').StableStringifyOptions['replacer']} */
+	var replacer = function (_key, value) {
 		if (value === 1) { return 'one'; }
 		if (value === 2) { return 'two'; }
 		return value;
@@ -29,6 +30,7 @@ test('replace with object', function (t) {
 	t.plan(1);
 
 	var obj = { a: 1, b: 2, c: false };
+	/** @type {import('..').StableStringifyOptions['replacer']} */
 	var replacer = function (key, value) {
 		if (key === 'b') { return { d: 1 }; }
 		if (value === 1) { return 'one'; }
@@ -42,7 +44,8 @@ test('replace with undefined', function (t) {
 	t.plan(1);
 
 	var obj = { a: 1, b: 2, c: false };
-	var replacer = function (key, value) {
+	/** @type {import('..').StableStringifyOptions['replacer']} */
+	var replacer = function (_key, value) {
 		if (value === false) { return; }
 		return value;
 	};
@@ -54,6 +57,7 @@ test('replace with array', function (t) {
 	t.plan(1);
 
 	var obj = { a: 1, b: 2, c: false };
+	/** @type {import('..').StableStringifyOptions['replacer']} */
 	var replacer = function (key, value) {
 		if (key === 'b') { return ['one', 'two']; }
 		return value;
@@ -66,7 +70,8 @@ test('replace array item', function (t) {
 	t.plan(1);
 
 	var obj = { a: 1, b: 2, c: [1, 2] };
-	var replacer = function (key, value) {
+	/** @type {import('..').StableStringifyOptions['replacer']} */
+	var replacer = function (_key, value) {
 		if (value === 1) { return 'one'; }
 		if (value === 2) { return 'two'; }
 		return value;

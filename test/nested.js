@@ -11,19 +11,23 @@ test('nested', function (t) {
 
 test('cyclic (default)', function (t) {
 	t.plan(1);
-	var one = { a: 1 };
+	var one = { a: 1, two: {} };
 	var two = { a: 2, one: one };
 	one.two = two;
 	try {
 		stringify(one);
 	} catch (ex) {
-		t.equal(ex.toString(), 'TypeError: Converting circular structure to JSON');
+		if (ex == null) { // eslint-disable-line eqeqeq
+			t.fail('nullish exception');
+		} else {
+			t.equal(ex.toString(), 'TypeError: Converting circular structure to JSON');
+		}
 	}
 });
 
 test('cyclic (specifically allowed)', function (t) {
 	t.plan(1);
-	var one = { a: 1 };
+	var one = { a: 1, two: {} };
 	var two = { a: 2, one: one };
 	one.two = two;
 	t.equal(stringify(one, { cycles: true }), '{"a":1,"two":{"a":2,"one":"__cycle__"}}');
