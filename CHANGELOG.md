@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.2.0](https://github.com/ljharb/json-stable-stringify/compare/v1.1.1...v1.2.0) - 2024-12-17
+
+### Fixed
+
+- [readme] remove dead badges [`#14`](https://github.com/ljharb/json-stable-stringify/issues/14)
+
+### Commits
+
+- [New] add types [`5dbd6c8`](https://github.com/ljharb/json-stable-stringify/commit/5dbd6c802fe013082e597ecf6a8c3428e60d906b)
+- [eslint] clean up formatting [`21e95e5`](https://github.com/ljharb/json-stable-stringify/commit/21e95e57ea55c6b7e8c63835391b1791a8ed9323)
+- [meta] sort package.json [`a9f44d5`](https://github.com/ljharb/json-stable-stringify/commit/a9f44d5e532e93e7cc48e384472c0a9da189bab9)
+- [actions] split out node 10-20, and 20+ [`74551e4`](https://github.com/ljharb/json-stable-stringify/commit/74551e4cc76ae90880b0471365de47d1c3dd1379)
+- [Tests] add test coverage for options provided directly on a cmp function [`0a50205`](https://github.com/ljharb/json-stable-stringify/commit/0a502052b9191f53f072599aac61aa829ac9e0ae)
+- [Robustness] cache more builtins [`d390c99`](https://github.com/ljharb/json-stable-stringify/commit/d390c99889ec80a20b77a9f73d8d8134f0fc11b8)
+- [Dev Deps] update `@ljharb/eslint-config`, `auto-changelog`, `tape` [`03686a0`](https://github.com/ljharb/json-stable-stringify/commit/03686a0af26444bac661e8ca0e70e3d13a4938d0)
+- [Tests] key ordering is reversed in node 11+ [`7034a17`](https://github.com/ljharb/json-stable-stringify/commit/7034a176d0dde8df1f899bf0f1c44e73f5792947)
+- [Dev Deps] update `npmignore`, `tape` [`ba8d519`](https://github.com/ljharb/json-stable-stringify/commit/ba8d519505f59725c9f4b0451332f6d64801a910)
+- [Refactor] use `call-bound` directly [`850b24c`](https://github.com/ljharb/json-stable-stringify/commit/850b24c5b3dc69b59804637c92c10f7bb3277ab8)
+- [Tests] replace `aud` with `npm audit` [`22fb720`](https://github.com/ljharb/json-stable-stringify/commit/22fb72061005f9b124a0dc84f8b87c3a977c00bd)
+- [Deps] update `call-bind` [`adc30b0`](https://github.com/ljharb/json-stable-stringify/commit/adc30b0746b58d469492e7586b1d32469dce4783)
+- [Deps] update `call-bind` [`a280582`](https://github.com/ljharb/json-stable-stringify/commit/a280582e6b8bb6e04642010931b60f9fda2fa0df)
+- [Dev Deps] add missing peer dep [`3bb517c`](https://github.com/ljharb/json-stable-stringify/commit/3bb517cc179cd90e841581046791d24cc2bee66a)
+
 ## [v1.1.1](https://github.com/ljharb/json-stable-stringify/compare/v1.1.0...v1.1.1) - 2024-01-16
 
 ### Fixed
