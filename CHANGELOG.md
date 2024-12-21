@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.2.1](https://github.com/ljharb/json-stable-stringify/compare/v1.2.0...v1.2.1) - 2024-12-21
+
+### Commits
+
+- [types] input is unknown, can be non object [`7135fba`](https://github.com/ljharb/json-stable-stringify/commit/7135fba3f03c6f97d801047c53fab90c26aacfa8)
+- [Dev Deps] update `@arethetypeswrong/cli`, `@types/tape` [`504a644`](https://github.com/ljharb/json-stable-stringify/commit/504a6442880d45ae2548b309a9f5cf0b488176db)
+
 ## [v1.2.0](https://github.com/ljharb/json-stable-stringify/compare/v1.1.1...v1.2.0) - 2024-12-17
 
 ### Fixed
