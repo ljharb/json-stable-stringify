@@ -49,13 +49,13 @@
 		"object-keys": "^1.1.1"
 	},
 	"devDependencies": {
-		"@arethetypeswrong/cli": "^0.17.1",
+		"@arethetypeswrong/cli": "^0.17.2",
 		"@ljharb/eslint-config": "^21.1.1",
 		"@ljharb/tsconfig": "^0.2.2",
 		"@types/call-bind": "^1.0.5",
 		"@types/isarray": "^2.0.3",
 		"@types/object-keys": "^1.0.3",
-		"@types/tape": "^5.7.0",
+		"@types/tape": "^5.8.0",
 		"auto-changelog": "^2.5.0",
 		"encoding": "^0.1.13",
 		"eslint": "=8.8.0",
