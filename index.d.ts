@@ -17,7 +17,7 @@ declare namespace stableStringify {
 }
 
 declare function stableStringify(
-    obj: object,
+    obj: unknown,
     options?: (stableStringify.Comparator & stableStringify.StableStringifyOptions) | stableStringify.StableStringifyOptions,
 ): string | undefined;
 

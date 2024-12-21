@@ -32,3 +32,15 @@ test('array with empty string', function (t) {
 	var obj = [4, '', 6];
 	t.equal(stringify(obj), '[4,"",6]');
 });
+
+test('raw string', function (t) {
+	t.plan(1);
+	var input = 'raw';
+	t.equal(stringify(input), '"raw"');
+});
+
+test('raw number', function (t) {
+	t.plan(1);
+	var input = 42;
+	t.equal(stringify(input), '42');
+});
