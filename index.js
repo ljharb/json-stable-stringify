@@ -34,6 +34,10 @@ module.exports = function stableStringify(obj) {
 	var cycles = !!opts && typeof opts.cycles === 'boolean' && opts.cycles;
 	/** @type {undefined | typeof defaultReplacer} */
 	var replacer = opts && opts.replacer ? callBind(opts.replacer) : defaultReplacer;
+	if (opts && typeof opts.collapseEmpty !== 'undefined' && typeof opts.collapseEmpty !== 'boolean') {
+		throw new TypeError('`collapseEmpty` must be a boolean, if provided');
+	}
+	var collapseEmpty = !!opts && opts.collapseEmpty;
 
 	var cmpOpt = typeof opts === 'function' ? opts : opts && opts.cmp;
 	/** @type {undefined | (<T extends import('.').NonArrayNode>(node: T) => (a: Exclude<keyof T, symbol | number>, b: Exclude<keyof T, symbol | number>) => number)} */
@@ -66,20 +70,27 @@ module.exports = function stableStringify(obj) {
 			}
 
 			node = replacer(parent, key, node);
-
 			if (node === undefined) {
 				return;
 			}
 			if (typeof node !== 'object' || node === null) {
 				return jsonStringify(node);
 			}
+
+			/** @type {(out: string[], brackets: '[]' | '{}') => string} */
+			var groupOutput = function (out, brackets) {
+				return collapseEmpty && out.length === 0
+					? brackets
+					: (brackets === '[]' ? '[' : '{') + $join(out, ',') + indent + (brackets === '[]' ? ']' : '}');
+			};
+
 			if (isArray(node)) {
 				var out = [];
 				for (var i = 0; i < node.length; i++) {
 					var item = stringify(node, i, node[i], level + 1) || jsonStringify(null);
 					out[out.length] = indent + space + item;
 				}
-				return '[' + $join(out, ',') + indent + ']';
+				return groupOutput(out, '[]');
 			}
 
 			if ($indexOf(seen, node) !== -1) {
@@ -107,7 +118,7 @@ module.exports = function stableStringify(obj) {
 				out[out.length] = indent + space + keyValue;
 			}
 			$splice(seen, $indexOf(seen, node), 1);
-			return '{' + $join(out, ',') + indent + '}';
+			return groupOutput(out, '{}');
 		}({ '': obj }, '', obj, 0)
 	);
 };

@@ -10,6 +10,7 @@ declare namespace stableStringify {
 
     type StableStringifyOptions = {
         cmp?: Comparator;
+        collapseEmpty?: boolean;
         cycles?: boolean;
         replacer?: (this: Node, key: Key, value: unknown) => unknown;
         space?: string | number;

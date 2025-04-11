@@ -74,6 +74,31 @@ test('space parameter (same as native)', function (t) {
 	);
 });
 
+test('space parameter base empty behavior: empty arrays and objects have added newline and space', function (t) {
+	t.plan(1);
+	var obj = { emptyArr: [], emptyObj: {} };
+	t.equal(
+		stringify(obj, { space: '  ' }),
+		'{\n  "emptyArr": [\n  ],\n  "emptyObj": {\n  }\n}'
+	);
+});
+
+test('space parameter, with collapseEmpty: true', function (t) {
+	t.plan(2);
+	var obj = { emptyArr: [], emptyObj: {} };
+
+	t['throws'](
+		// @ts-expect-error
+		function () { stringify(obj, { collapseEmpty: 'not a boolean' }); },
+		TypeError
+	);
+
+	t.equal(
+		stringify(obj, { collapseEmpty: true, space: '  ' }),
+		'{\n  "emptyArr": [],\n  "emptyObj": {}\n}'
+	);
+});
+
 test('space parameter, on a cmp function', function (t) {
 	t.plan(3);
 	var obj = { one: 1, two: 2 };
