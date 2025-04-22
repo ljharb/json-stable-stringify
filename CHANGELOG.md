@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.3.0](https://github.com/ljharb/json-stable-stringify/compare/v1.2.1...v1.3.0) - 2025-04-21
+
+### Fixed
+
+- [New] add `collapseEmpty` option [`#15`](https://github.com/ljharb/json-stable-stringify/issues/15)
+
+### Commits
+
+- [Dev Deps] update `@arethetypeswrong/cli`, `@ljharb/tsconfig`, `@types/tape` [`1ac9c16`](https://github.com/ljharb/json-stable-stringify/commit/1ac9c164666d4f70b216de0a7bb142ced5de2995)
+- [Deps] update `call-bound` [`729fcba`](https://github.com/ljharb/json-stable-stringify/commit/729fcba5d6f6b3b8599cc22e434272defc0a237f)
+
 ## [v1.2.1](https://github.com/ljharb/json-stable-stringify/compare/v1.2.0...v1.2.1) - 2024-12-21
 
 ### Commits
