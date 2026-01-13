@@ -153,5 +153,5 @@ MIT
 [downloads-url]: https://npm-stat.com/charts.html?package=json-stable-stringify
 [codecov-image]: https://codecov.io/gh/ljharb/json-stable-stringify/branch/main/graphs/badge.svg
 [codecov-url]: https://app.codecov.io/gh/ljharb/json-stable-stringify/
-[actions-image]: https://img.shields.io/endpoint?url=https://github-actions-badge-u3jn4tfpocch.runkit.sh/ljharb/json-stable-stringify
+[actions-image]: https://img.shields.io/github/check-runs/ljharb/json-stable-stringify/main
 [actions-url]: https://github.com/ljharb/json-stable-stringify/actions
