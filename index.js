@@ -3,16 +3,6 @@
 /** @type {typeof JSON.stringify} */
 var jsonStringify = (typeof JSON !== 'undefined' ? JSON : require('jsonify')).stringify;
 
-var isArray = require('isarray');
-var objectKeys = require('object-keys');
-var callBind = require('call-bind');
-var callBound = require('call-bound');
-
-var $join = callBound('Array.prototype.join');
-var $indexOf = callBound('Array.prototype.indexOf');
-var $splice = callBound('Array.prototype.splice');
-var $sort = callBound('Array.prototype.sort');
-
 /** @type {(n: number, char: string) => string} */
 var strRepeat = function repeat(n, char) {
 	var str = '';
@@ -32,8 +22,11 @@ module.exports = function stableStringify(obj) {
 	var space = (opts && opts.space) || '';
 	if (typeof space === 'number') { space = strRepeat(space, ' '); }
 	var cycles = !!opts && typeof opts.cycles === 'boolean' && opts.cycles;
-	/** @type {undefined | typeof defaultReplacer} */
-	var replacer = opts && opts.replacer ? callBind(opts.replacer) : defaultReplacer;
+	/** @type {typeof defaultReplacer} */
+	var replacer = opts && opts.replacer
+		// eslint-disable-next-line no-extra-parens
+		? /** @type {typeof defaultReplacer} */ (Function.call.bind(/** @type {any} */ (opts.replacer)))
+		: defaultReplacer;
 	if (opts && typeof opts.collapseEmpty !== 'undefined' && typeof opts.collapseEmpty !== 'boolean') {
 		throw new TypeError('`collapseEmpty` must be a boolean, if provided');
 	}
@@ -58,7 +51,7 @@ module.exports = function stableStringify(obj) {
 
 	/** @type {import('.').Node[]} */
 	var seen = [];
-	return (/** @type {(parent: import('.').Node, key: string | number, node: unknown, level: number) => string | undefined} */
+	return (/** @type {(parent: import('.').Node, key: string | number, node: any, level: number) => string | undefined} */
 		function stringify(parent, key, node, level) {
 			var indent = space ? '\n' + strRepeat(level, space) : '';
 			var colonSeparator = space ? ': ' : ':';
@@ -81,10 +74,10 @@ module.exports = function stableStringify(obj) {
 			var groupOutput = function (out, brackets) {
 				return collapseEmpty && out.length === 0
 					? brackets
-					: (brackets === '[]' ? '[' : '{') + $join(out, ',') + indent + (brackets === '[]' ? ']' : '}');
+					: (brackets === '[]' ? '[' : '{') + out.join(',') + indent + (brackets === '[]' ? ']' : '}');
 			};
 
-			if (isArray(node)) {
+			if (Array.isArray(node)) {
 				var out = [];
 				for (var i = 0; i < node.length; i++) {
 					var item = stringify(node, i, node[i], level + 1) || jsonStringify(null);
@@ -93,7 +86,7 @@ module.exports = function stableStringify(obj) {
 				return groupOutput(out, '[]');
 			}
 
-			if ($indexOf(seen, node) !== -1) {
+			if (seen.indexOf(node) !== -1) {
 				if (cycles) { return jsonStringify('__cycle__'); }
 				throw new TypeError('Converting circular structure to JSON');
 			} else {
@@ -102,7 +95,7 @@ module.exports = function stableStringify(obj) {
 
 			/** @type {import('.').Key[]} */
 			// eslint-disable-next-line no-extra-parens
-			var keys = $sort(objectKeys(node), cmp && cmp(/** @type {import('.').NonArrayNode} */ (node)));
+			var keys = Object.keys(node).sort(cmp && cmp(/** @type {import('.').NonArrayNode} */ (node)));
 			var out = [];
 			for (var i = 0; i < keys.length; i++) {
 				var key = keys[i];
@@ -117,7 +110,7 @@ module.exports = function stableStringify(obj) {
 
 				out[out.length] = indent + space + keyValue;
 			}
-			$splice(seen, $indexOf(seen, node), 1);
+			seen.splice(seen.indexOf(node), 1);
 			return groupOutput(out, '{}');
 		}({ '': obj }, '', obj, 0)
 	);

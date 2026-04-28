@@ -42,11 +42,7 @@
 		"url": "https://github.com/sponsors/ljharb"
 	},
 	"dependencies": {
-		"call-bind": "^1.0.8",
-		"call-bound": "^1.0.4",
-		"isarray": "^2.0.5",
-		"jsonify": "^0.0.1",
-		"object-keys": "^1.1.1"
+		"jsonify": "^0.0.1"
 	},
 	"devDependencies": {
 		"@arethetypeswrong/cli": "^0.17.4",
