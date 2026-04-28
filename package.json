@@ -62,7 +62,7 @@
 		"typescript": "next"
 	},
 	"engines": {
-		"node": ">= 0.4"
+		"node": ">= 1"
 	},
 	"testling": {
 		"files": "test/*.js"
