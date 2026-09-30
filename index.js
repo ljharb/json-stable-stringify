@@ -70,7 +70,7 @@ module.exports = function stableStringify(obj) {
 			}
 
 			node = replacer(parent, key, node);
-			if (node === undefined) {
+			if (node === void undefined) {
 				return;
 			}
 			if (typeof node !== 'object' || node === null) {
