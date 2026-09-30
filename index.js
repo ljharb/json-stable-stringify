@@ -13,6 +13,8 @@ var $indexOf = callBound('Array.prototype.indexOf');
 var $splice = callBound('Array.prototype.splice');
 var $sort = callBound('Array.prototype.sort');
 
+/** @import { Getter, Key, Node, NonArrayNode } from '.' */
+
 /** @type {(n: number, char: string) => string} */
 var strRepeat = function repeat(n, char) {
 	var str = '';
@@ -22,12 +24,12 @@ var strRepeat = function repeat(n, char) {
 	return str;
 };
 
-/** @type {(parent: import('.').Node, key: import('.').Key, value: unknown) => unknown} */
+/** @type {(parent: Node, key: Key, value: unknown) => unknown} */
 var defaultReplacer = function (_parent, _key, value) { return value; };
 
-/** @type {import('.')} */
+/** @type {typeof import('.')} */
 module.exports = function stableStringify(obj) {
-	/** @type {Parameters<import('.')>[1]} */
+	/** @type {Parameters<typeof import('.')>[1]} */
 	var opts = arguments.length > 1 ? arguments[1] : void undefined;
 	var space = (opts && opts.space) || '';
 	if (typeof space === 'number') { space = strRepeat(space, ' '); }
@@ -40,25 +42,25 @@ module.exports = function stableStringify(obj) {
 	var collapseEmpty = !!opts && opts.collapseEmpty;
 
 	var cmpOpt = typeof opts === 'function' ? opts : opts && opts.cmp;
-	/** @type {undefined | (<T extends import('.').NonArrayNode>(node: T) => (a: Exclude<keyof T, symbol | number>, b: Exclude<keyof T, symbol | number>) => number)} */
+	/** @type {undefined | (<T extends NonArrayNode>(node: T) => (a: Exclude<keyof T, symbol | number>, b: Exclude<keyof T, symbol | number>) => number)} */
 	var cmp = cmpOpt && function (node) {
 		// eslint-disable-next-line no-extra-parens
 		var get = /** @type {NonNullable<typeof cmpOpt>} */ (cmpOpt).length > 2
-			&& /** @type {import('.').Getter['get']} */ function get(k) { return node[k]; };
+			&& /** @type {Getter['get']} */ function get(k) { return node[k]; };
 		return function (a, b) {
 			// eslint-disable-next-line no-extra-parens
 			return /** @type {NonNullable<typeof cmpOpt>} */ (cmpOpt)(
 				{ key: a, value: node[a] },
 				{ key: b, value: node[b] },
 				// @ts-expect-error TS doesn't understand the optimization used here
-				get ? /** @type {import('.').Getter} */ { __proto__: null, get: get } : void undefined
+				get ? /** @type {Getter} */ { __proto__: null, get: get } : void undefined
 			);
 		};
 	};
 
-	/** @type {import('.').Node[]} */
+	/** @type {Node[]} */
 	var seen = [];
-	return (/** @type {(parent: import('.').Node, key: string | number, node: unknown, level: number) => string | undefined} */
+	return (/** @type {(parent: Node, key: string | number, node: unknown, level: number) => string | undefined} */
 		function stringify(parent, key, node, level) {
 			var indent = space ? '\n' + strRepeat(level, space) : '';
 			var colonSeparator = space ? ': ' : ':';
@@ -97,17 +99,17 @@ module.exports = function stableStringify(obj) {
 				if (cycles) { return jsonStringify('__cycle__'); }
 				throw new TypeError('Converting circular structure to JSON');
 			} else {
-				seen[seen.length] = /** @type {import('.').NonArrayNode} */ (node);
+				seen[seen.length] = /** @type {NonArrayNode} */ (node);
 			}
 
-			/** @type {import('.').Key[]} */
+			/** @type {Key[]} */
 			// eslint-disable-next-line no-extra-parens
-			var keys = $sort(objectKeys(node), cmp && cmp(/** @type {import('.').NonArrayNode} */ (node)));
+			var keys = $sort(objectKeys(node), cmp && cmp(/** @type {NonArrayNode} */ (node)));
 			var out = [];
 			for (var i = 0; i < keys.length; i++) {
 				var key = keys[i];
 				// eslint-disable-next-line no-extra-parens
-				var value = stringify(/** @type {import('.').Node} */ (node), key, /** @type {import('.').NonArrayNode} */ (node)[key], level + 1);
+				var value = stringify(/** @type {Node} */ (node), key, /** @type {NonArrayNode} */ (node)[key], level + 1);
 
 				if (!value) { continue; }
 
