@@ -18,6 +18,12 @@ declare namespace stableStringify {
 }
 
 declare function stableStringify(
+    obj: string | number | boolean | Record<keyof any, unknown> | unknown[] | null
+): string;
+declare function stableStringify(
+    obj: undefined
+): undefined;
+declare function stableStringify(
     obj: unknown,
     options?: (stableStringify.Comparator & stableStringify.StableStringifyOptions) | stableStringify.StableStringifyOptions,
 ): string | undefined;
