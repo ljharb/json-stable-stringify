@@ -86,20 +86,21 @@ module.exports = function stableStringify(obj) {
 					: (brackets === '[]' ? '[' : '{') + $join(out, ',') + indent + (brackets === '[]' ? ']' : '}');
 			};
 
+			if ($indexOf(seen, node) !== -1) {
+				if (cycles) { return jsonStringify('__cycle__'); }
+				throw new TypeError('Converting circular structure to JSON');
+			} else {
+				seen[seen.length] = /** @type {Node} */ (node);
+			}
+
 			if (isArray(node)) {
 				var out = [];
 				for (var i = 0; i < node.length; i++) {
 					var item = stringify(node, i, node[i], level + 1) || jsonStringify(null);
 					out[out.length] = indent + space + item;
 				}
+				$splice(seen, $indexOf(seen, node), 1);
 				return groupOutput(out, '[]');
-			}
-
-			if ($indexOf(seen, node) !== -1) {
-				if (cycles) { return jsonStringify('__cycle__'); }
-				throw new TypeError('Converting circular structure to JSON');
-			} else {
-				seen[seen.length] = /** @type {NonArrayNode} */ (node);
 			}
 
 			/** @type {Key[]} */

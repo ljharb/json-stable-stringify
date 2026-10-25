@@ -46,3 +46,125 @@ test('acyclic but with reused obj-property pointers', function (t) {
 	var y = { b: x, c: x };
 	t.equal(stringify(y), '{"b":{"a":1},"c":{"a":1}}');
 });
+
+test('cyclic arrays respect both cycle modes', function (t) {
+	/** @type {unknown[]} */
+	var self = [];
+	self.push(self);
+
+	t['throws'](function () { stringify(self); }, TypeError, 'default mode rejects an array cycle');
+	t['throws'](function () { stringify(self, { cycles: false }); }, TypeError, 'explicit false rejects an array cycle');
+	t.doesNotThrow(function () {
+		t.equal(stringify(self, { cycles: true }), '["__cycle__"]');
+	});
+	t.end();
+});
+
+test('mutually cyclic arrays', function (t) {
+	/** @type {unknown[]} */
+	var one = [];
+	/** @type {unknown[]} */
+	var two = [];
+	one.push(two);
+	two.push(one);
+
+	t['throws'](function () { stringify(one); }, TypeError);
+	t.doesNotThrow(function () {
+		t.equal(stringify(one, { cycles: true }), '[["__cycle__"]]');
+	});
+	t.doesNotThrow(function () {
+		t.equal(stringify(two, { cycles: true }), '[["__cycle__"]]');
+	});
+	t.end();
+});
+
+test('mixed object and array cycles use the current ancestor', function (t) {
+	/** @type {unknown[]} */
+	var array = [];
+	var object = { array: array };
+	array.push(object);
+
+	t['throws'](function () { stringify(array); }, TypeError);
+	t['throws'](function () { stringify(object); }, TypeError);
+	t.doesNotThrow(function () {
+		t.equal(stringify(array, { cycles: true }), '[{"array":"__cycle__"}]');
+	});
+	t.doesNotThrow(function () {
+		t.equal(stringify(object, { cycles: true }), '{"array":["__cycle__"]}');
+	});
+	t.doesNotThrow(function () {
+		t.equal(stringify({ nested: array }, { cycles: true }), '{"nested":[{"array":"__cycle__"}]}');
+	});
+	t.end();
+});
+
+test('shared arrays are serialized again after leaving their path', function (t) {
+	var shared = [1, { x: 2 }];
+	var value = { a: shared, b: [shared] };
+	var expected = '{"a":[1,{"x":2}],"b":[[1,{"x":2}]]}';
+
+	t.doesNotThrow(function () {
+		t.equal(stringify(value), expected);
+	});
+	t.doesNotThrow(function () {
+		t.equal(stringify(value, { cycles: true }), expected);
+	});
+	t.doesNotThrow(function () {
+		t.equal(stringify([shared, shared]), '[[1,{"x":2}],[1,{"x":2}]]');
+	});
+	t.doesNotThrow(function () {
+		t.equal(stringify([[], []], { collapseEmpty: true, cycles: true }), '[[],[]]');
+	});
+	t.end();
+});
+
+test('repeated cyclic arrays are tracked separately on each path', function (t) {
+	/** @type {unknown[]} */
+	var array = [];
+	array.push(array);
+
+	t.doesNotThrow(function () {
+		t.equal(stringify([array, { nested: array }], { cycles: true }), '[["__cycle__"],{"nested":["__cycle__"]}]');
+	});
+	t.end();
+});
+
+test('replacer can remove or introduce an array cycle', function (t) {
+	/** @type {unknown[]} */
+	var array = [];
+	array.push(array);
+	/** @type {import('..').StableStringifyOptions['replacer']} */
+	var removeCycle = function (_key, value) {
+		return this === array ? void undefined : value;
+	};
+
+	t.doesNotThrow(function () {
+		t.equal(stringify(array, { replacer: removeCycle }), '[null]');
+	});
+	t.doesNotThrow(function () {
+		t.equal(stringify(array, { cycles: true, replacer: removeCycle }), '[null]');
+	});
+
+	var ordinary = [1];
+	/** @type {import('..').StableStringifyOptions['replacer']} */
+	var introduceCycle = function (_key, value) {
+		return this === ordinary ? ordinary : value;
+	};
+	t['throws'](function () { stringify(ordinary, { replacer: introduceCycle }); }, TypeError);
+	t.doesNotThrow(function () {
+		t.equal(stringify(ordinary, { cycles: true, replacer: introduceCycle }), '["__cycle__"]');
+	});
+	t.end();
+});
+
+test('toJSON conversion runs before array cycle detection', function (t) {
+	/** @type {unknown[]} */
+	var array = [];
+	array.push({ toJSON: function () { return array; } });
+
+	t['throws'](function () { stringify(array); }, TypeError);
+	t.doesNotThrow(function () {
+		t.equal(stringify(array, { cycles: true }), '["__cycle__"]');
+	});
+	t.end();
+});
